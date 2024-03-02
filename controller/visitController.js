@@ -1,44 +1,9 @@
-const bcrypt = require("bcryptjs");
-const crypto = require("crypto");
-const jwt = require("jsonwebtoken");
-const mongoose = require('mongoose');
+const { visit } = require("../models/visit");
 
-
-const { User } = require("../models/user");
-
-// Comment out the validation imports if you want to remove validation temporarily
-const {
-  validateUser,
-  validateLogin,
-  validateEmail,
-  validateResetPasswordCredentials,
-} = require("../middleware/validation");
-const { sendTokenEmail, resetPasswordEmail, sendEmail } = require("../utils/emailService");
-
-exports.signupUser = async (req, res) => {
-  const { error } = validateUser(req.body);
-
-  if (error) return res.status(400).send({ message: "Enter data correctly" });
-
-  const { email, password, userName, profile_picture } = req.body;
-  console.log(profile_picture)
-  const user = await User.findOne({ email: email });
-  const username = await User.findOne({ userName: userName });
-
-  if (user) return res.status(404).send({ message: "User already exists" });
-  if (username) return res.status(404).send({ message: "Username taken" });
-
-  const salt = await bcrypt.genSalt(12);
-  const hashedPassword = await bcrypt.hash(password, salt);
-
-  const verificationToken = crypto.randomBytes(20).toString("hex");
-
+exports.postvisit = async (req, res) => {
+  
   let newUser = new User({
-    email: email,
-    password: hashedPassword,
-    userName: userName,
-    verificationToken: verificationToken,
-    profile_picture: profile_picture
+   
   });
   try {
     const savedUser = await newUser.save();
@@ -49,10 +14,11 @@ exports.signupUser = async (req, res) => {
     console.log("Account not saved", err);
     return res.status(400).send({ message: "Account not saved" });
   }
+
 };
 
 
-exports.FetchUsers = async (req, res) => {
+exports.updatevisit = async (req, res) => {
   try {
     // Exclude users with email "admin@galico.io" from the query
     const users = await User.find({ email: { $ne: "admin@galico.io" },deleted: false });
@@ -85,7 +51,7 @@ exports.FetchUsers = async (req, res) => {
 };
 
 
-exports.UpdateUsers = async (req, res) => {
+exports.getvisit = async (req, res) => {
   try {
     const { id, action } = req.body;
 
