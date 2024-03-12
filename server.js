@@ -13,6 +13,7 @@ app.use(cors());
 
 const visit = require("./routes/visits");
 const misc = require("./routes/misc")
+const masterweek = require("./routes/masterweek")
 
 const { attachDatabaseConnection } = require('./middleware/middleware');
 
@@ -21,6 +22,9 @@ app.use(attachDatabaseConnection);
 
 app.use("/visit", visit);
 app.use("/misc", misc);
+app.use("/masterweek", masterweek);
+
+
 
 app.listen(2556, () => {
     console.log('Server is running on port 2556');

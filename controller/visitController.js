@@ -27,6 +27,43 @@ const getvisits = async (req, res) => {
   });
 };
 
+const getVisitById = async (req, res) => {
+
+  const id = JSON.stringify(req.body.id);
+
+  req.mysql.query(`SELECT * FROM visits WHERE id = ${id}`, (error, results, fields) => {
+    if (error) {
+      console.error("Error retrieving visits:", error);
+      res.status(400).json({ error: "Error retrieving visits" });
+      return;
+    }
+    res.json(results);
+  });
+};
+
+const getVisitByMemberId = async (req, res) => {
+
+  const memberId = req.body.id; 
+
+    req.mysql.query(
+
+        `SELECT * FROM visits WHERE meta_value LIKE '%${memberId}%'`,
+        (error, results, fields) => {
+            if (error) {
+                console.error("Error retrieving visits:", error);
+                res.status(400).json({ error: "Error retrieving visits" });
+                return;
+            }
+            res.json(results);
+        }
+    );
+};
+
+
+
+
+
+
 const updatevisits = async (req, res) => {
   try {
     const id = req.body.id;
@@ -50,4 +87,6 @@ module.exports = {
   postvisit,
   getvisits,
   updatevisits,
+  getVisitById,
+  getVisitByMemberId
 };
