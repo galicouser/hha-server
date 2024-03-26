@@ -29,7 +29,9 @@ const getvisits = async (req, res) => {
 
 const getVisitById = async (req, res) => {
 
-  const id = JSON.stringify(req.body.id);
+  console.log("I am in visit by id")
+
+  const id = JSON.stringify(req.query.id);
 
   req.mysql.query(`SELECT * FROM visits WHERE id = ${id}`, (error, results, fields) => {
     if (error) {
@@ -43,20 +45,20 @@ const getVisitById = async (req, res) => {
 
 const getVisitByMemberId = async (req, res) => {
 
-  const memberId = req.body.id; 
 
-    req.mysql.query(
+  const memberId = req.query.id; 
 
-        `SELECT * FROM visits WHERE meta_value LIKE '%${memberId}%'`,
-        (error, results, fields) => {
-            if (error) {
-                console.error("Error retrieving visits:", error);
-                res.status(400).json({ error: "Error retrieving visits" });
-                return;
-            }
-            res.json(results);
-        }
-    );
+  req.mysql.query(
+    `SELECT * FROM visits WHERE meta_value LIKE '%${memberId}%'`,
+    (error, results, fields) => {
+      if (error) {
+        console.error("Error retrieving visits:", error);
+        res.status(400).json({ error: "Error retrieving visits" });
+        return;
+      }
+      res.json(results);
+    }
+  );
 };
 
 
