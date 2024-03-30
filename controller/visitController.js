@@ -29,8 +29,6 @@ const getvisits = async (req, res) => {
 
 const getVisitById = async (req, res) => {
 
-  console.log("I am in visit by id")
-
   const id = JSON.stringify(req.query.id);
 
   req.mysql.query(`SELECT * FROM visits WHERE id = ${id}`, (error, results, fields) => {
@@ -68,8 +66,13 @@ const getVisitByMemberId = async (req, res) => {
 
 const updatevisits = async (req, res) => {
   try {
-    const id = req.body.id;
-    const new_meta_value = req.body.meta_value;
+
+
+    const requestBody = JSON.parse(Object.keys(req.body)[0]);
+
+    const id = requestBody.id;
+    const new_meta_value = requestBody.meta_value;
+
 
     const query = `UPDATE visits SET meta_value = '${new_meta_value}' WHERE id = ${id};`;
 
@@ -83,6 +86,9 @@ const updatevisits = async (req, res) => {
   } catch (error) {
     res.status(400).send("Error updating visit");
   }
+  
+
+
 };
 
 module.exports = {

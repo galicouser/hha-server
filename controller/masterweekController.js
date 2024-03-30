@@ -9,8 +9,11 @@ const getmasterweeks = async (req, res) => {
 };
 
 const addMasterWeek = async (req, res) => {
+
+  console.log("I am pinged")
   try {
     const reqBody = req.body;
+
     const jsonString = Object.keys(reqBody)[0];
     const jsonObject = JSON.parse(jsonString);
     const { member_id, from_date, to_date, visits } = jsonObject;
@@ -19,14 +22,14 @@ const addMasterWeek = async (req, res) => {
 
     req.mysql.query(query, (err, result) => {
       if (err) {
-       
+        console.log(err)
         res.status(400).send("Error adding masterweek" + err);
       } else {
         res.status(200).send("Masterweek Added Successfully");
       }
     });
   } catch (error) {
-    
+    console.log(error)
     res.status(400).send("Error adding Masterweek");
   }
 };
