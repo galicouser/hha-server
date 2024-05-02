@@ -24,7 +24,9 @@ app.use("/visit", visit);
 app.use("/misc", misc);
 app.use("/masterweek", masterweek);
 
-
+app.get("/test", (req,res) => {
+    res.send({message: "test test "})
+})
 
 app.listen(2556, () => {
     console.log('Server is running on port 2556');
